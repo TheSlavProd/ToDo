@@ -13,7 +13,7 @@ class Product extends Component{
             <div>
             <Description description={this.props.description}/>
             <NameForHome nameforhome={this.props.name}/>
-            <Price price={this.props.price}/>   
+            <Price price={this.props.price} dram="500֏ "/>   
             </div>
         )
     }
