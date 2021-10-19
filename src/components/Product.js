@@ -9,11 +9,14 @@ class Product extends Component {
     //console.log(props)
   }
   render() {
+    let { description, name, price, icon } = this.props;
     return (
       <div>
-        <Description description={this.props.description} />
-        <NameForHome nameforhome={this.props.name} />
-        <Price price={this.props.price} />
+        <NameForHome nameforhome={name} />
+        
+        <Description description={description} />
+        <Price price={price} />
+        <span>Icon: {icon}</span>
       </div>
     );
   }
