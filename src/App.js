@@ -9,10 +9,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-      <Product price="1$" name="banabas" description="Fresh bananas from Ecuador"/>
+      <Product price="500$" name="Banan" description="Fresh bananas from Ecuador"/>
 
 
       <Counter valueDef="New class component"/>
+
       <User name="Hayk" love="Cats" age={15} />
 
       </header>

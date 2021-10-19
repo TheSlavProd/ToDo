@@ -10,7 +10,7 @@ class NameForHome extends Component{
     }
     render(){
         return(
-            <span> {this.props.nameforhome}</span>
+            <span>Name: {this.props.nameforhome}</span>
         )
     }
 
