@@ -4,8 +4,10 @@ import User from "./components/User";
 import Counter from "./components/Counter";
 import Product from "./components/Product";
 import Input from "./input/Input";
+import Todo from "./components/Todo";
 
 function App() {
+  /*
   const fruits = [
     {
       id: 1,
@@ -50,10 +52,13 @@ function App() {
         />
       </li>
     );
-  });
+  });   */
 
   return (
     <div className="App">
+      <Todo />
+
+      {/*
       <header className="App-header">
       <Input/>
         <ol>
@@ -62,16 +67,16 @@ function App() {
         </ol>
 
         <br />
-        {/*
+        {
         <Product
           price="450$"
           name="Banan"
-          description="Fresh bananas from Ecuador" /> */}
+          description="Fresh bananas from Ecuador" /> 
 
         <Counter valueDef="New class component" />
 
         <User name="Hayk" love="Cats" age={15} />
-      </header>
+      </header>  */}
     </div>
   );
 }
