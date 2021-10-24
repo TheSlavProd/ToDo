@@ -5,7 +5,8 @@ import Counter from "./components/Counter";
 import Product from "./components/Product";
 import Input from "./input/Input";
 import Todo from "./components/Todo";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import TodoTest from "./components/TodoTest";
 function App() {
   /*
   const fruits = [
@@ -56,9 +57,11 @@ function App() {
 
   return (
     <div className="App">
-      <Todo />
+      <TodoTest/>
+   
 
       {/*
+        <Todo />
       <header className="App-header">
       <Input/>
         <ol>

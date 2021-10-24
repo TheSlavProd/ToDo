@@ -2,30 +2,43 @@ import react, { Component } from "react";
 import style from "./todo.module.css";
 import { Container, Row, Col, Button, FormControl } from "react-bootstrap";
 
-class Todo extends Component {
+class TodoTest extends Component {
   state = {
-    tasks: ["Learn english", "Go market"],
+    tasks: [{title: "Learn english",
+            desc: " desc"
+},
+{title: "Go market"}],
     inputValue: "",
+    taskObj: {title: ""}
   };
 
   handleChange = (event) => {
-    let inputValue = event.target.value;
+    //let inputValue = event.target.value;
+    let taskObj = event.target.value;
+
     this.setState({
-      inputValue,
+      //inputValue,
+      taskObj: {title: taskObj}
     });
+
   };
   addTask = () => {
-    let inputValue = this.state.inputValue.trim();
-    let tasks = [...this.state.tasks, inputValue];
+      
 
-    if (!inputValue) {
+    let taskObj = this.state.taskObj;
+    taskObj.title = taskObj.title.trim()
+    //taskObj = taskObj.title.trim()
+    let tasks = [...this.state.tasks, taskObj];
+    
+    if (!taskObj.title) {
       return;
     }
     // tasks.push(inputValue.trim());
     //console.log(tasks);
     this.setState({
       tasks,
-      inputValue: "",
+      taskObj: {title: ""}
+      
     });
   };
 
@@ -33,7 +46,7 @@ class Todo extends Component {
     let li = this.state.tasks.map((task, index) => {
       return (
         <Col key={index}>
-          <div>{task}</div>
+          <div>{task.title} {task.desc}</div>
         </Col>
       );
     });
@@ -45,7 +58,7 @@ class Todo extends Component {
           <FormControl
             type="text"
             onChange={this.handleChange}
-            value={this.state.inputValue}
+            value={this.state.taskObj.title}
           ></FormControl>
           </Col>
           <Col>
@@ -64,4 +77,4 @@ class Todo extends Component {
   }
 }
 
-export default Todo;
+export default TodoTest;
