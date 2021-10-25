@@ -1,5 +1,6 @@
 import react, { Component } from "react";
 import style from "./todo.module.css";
+import idGen from "../helper/idGen";
 import {
   Container,
   Row,
@@ -8,8 +9,9 @@ import {
   FormControl,
   InputGroup,
   Card,
+  Form
 } from "react-bootstrap";
-import idGen from "../helper/idGen";
+
 
 class Todo extends Component {
   state = {
@@ -64,11 +66,13 @@ class Todo extends Component {
           <Card border="primary" className="mb-2">
             <Card.Header>{task.inputValue}</Card.Header>
             <Card.Body>
+            
               <Card.Title>About task</Card.Title>
               <Card.Text>
                 Some quick example text to build on the card title and make up
                 the bulk of the card's content.
               </Card.Text>
+              <Form.Check type="checkbox" label="Check for remove" />
               <Button onClick={()=>{this.deleteTask(task._id)}} variant="danger">
                 Delete
               </Button>
@@ -93,7 +97,7 @@ class Todo extends Component {
               />
               <Button
                 variant="outline-primary"
-                className={style.colo}
+          
                 onClick={this.addTask}
                 id="button-addon2"
               >
