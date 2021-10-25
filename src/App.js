@@ -5,6 +5,7 @@ import Counter from "./components/Counter";
 import Product from "./components/Product";
 import Input from "./input/Input";
 import Todo from "./components/Todo";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   /*
@@ -56,9 +57,11 @@ function App() {
 
   return (
     <div className="App">
-      <Todo />
+    <Todo />
+   
 
       {/*
+        
       <header className="App-header">
       <Input/>
         <ol>
