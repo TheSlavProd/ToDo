@@ -6,7 +6,7 @@ import Product from "./components/Product";
 import Input from "./input/Input";
 import Todo from "./components/Todo";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import TodoTest from "./components/TodoTest";
+
 function App() {
   /*
   const fruits = [
@@ -57,11 +57,11 @@ function App() {
 
   return (
     <div className="App">
-      <TodoTest/>
+    <Todo />
    
 
       {/*
-        <Todo />
+        
       <header className="App-header">
       <Input/>
         <ol>
