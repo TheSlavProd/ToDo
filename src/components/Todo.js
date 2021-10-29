@@ -11,6 +11,7 @@ import {
   Card,
   Form,
 } from "react-bootstrap";
+import Task from "./task/Task"
 
 class Todo extends Component {
   state = {
@@ -90,32 +91,14 @@ class Todo extends Component {
     let li = tasks.map((task, index) => {
       return (
         <Col key={task._id} xl={2} lg={3} md={4} sm={6} xs={12}>
-          <Card border="primary" className="mb-2">
-            <Card.Header>{task.inputValue}</Card.Header>
-            <Card.Body>
-              <Card.Title>About task</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </Card.Text>
-              <Form.Check
-                type="checkbox"
-                label="Check for remove"
-                onChange={() => {
-                  this.selectTask(task._id);
-                }}
-              />
-              <Button
-                disabled={this.state.selectedTask.size}
-                onClick={() => {
-                  this.deleteTask(task._id);
-                }}
-                variant="danger"
-              >
-                Delete
-              </Button>
-            </Card.Body>
-          </Card>
+          <Task 
+          selectTask={this.selectTask}
+          deleteTask={this.deleteTask}
+          data={task} 
+          disabled={this.state.selectedTask.size}
+          
+          />
+          
         </Col>
       );
     });
