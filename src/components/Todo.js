@@ -1,5 +1,6 @@
 import react, { Component } from "react";
 import style from "./todo.module.css";
+import idGen from "../helper/idGen";
 import {
   Container,
   Row,
@@ -8,13 +9,15 @@ import {
   FormControl,
   InputGroup,
   Card,
+  Form,
 } from "react-bootstrap";
-import idGen from "../helper/idGen";
+import Task from "./task/Task"
 
 class Todo extends Component {
   state = {
     tasks: [],
     inputValue: "",
+    selectedTask: new Set(),
   };
 
   handleChange = (event) => {
@@ -40,40 +43,62 @@ class Todo extends Component {
     });
   };
 
-  deleteTask = (id) =>{
-   const newTask = this.state.tasks.filter((task)=>id !== task._id)
+  deleteTask = (id) => {
+    const newTask = this.state.tasks.filter((task) => id !== task._id);
 
     this.setState({
-      tasks: newTask
-    })
+      tasks: newTask,
+    });
+  };
 
-  }
+  selectTask = (id) => {
+    let selectedTask = new Set(this.state.selectedTask);
+    if (selectedTask.has(id)) {
+      selectedTask.delete(id);
+    } else {
+      selectedTask.add(id);
+    }
+
+    this.setState({
+      selectedTask,
+    });
+  };
+
+  removeSelectedTask = () => {
+    const { selectedTask, tasks } = this.state;
+    const newTask = tasks.filter((task) => {
+      if (selectedTask.has(task._id)) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    this.setState({
+      tasks: newTask,
+      selectedTask: new Set(),
+    });
+  };
+
+  handleEnter = (event) => {
+    if (event.key === "Enter") {
+      this.addTask();
+    }
+  };
 
   render() {
     const { inputValue, tasks } = this.state;
 
     let li = tasks.map((task, index) => {
       return (
-        <Col key={task._id} 
-        xl={2}
-        lg={3}
-        md={4}
-        sm={6}
-        xs={12}
-        >
-          <Card border="primary" className="mb-2">
-            <Card.Header>{task.inputValue}</Card.Header>
-            <Card.Body>
-              <Card.Title>About task</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </Card.Text>
-              <Button onClick={()=>{this.deleteTask(task._id)}} variant="danger">
-                Delete
-              </Button>
-            </Card.Body>
-          </Card>
+        <Col key={task._id} xl={2} lg={3} md={4} sm={6} xs={12}>
+          <Task 
+          selectTask={this.selectTask}
+          deleteTask={this.deleteTask}
+          data={task} 
+          disabled={this.state.selectedTask.size}
+          
+          />
+          
         </Col>
       );
     });
@@ -81,23 +106,33 @@ class Todo extends Component {
     return (
       <Container>
         <Row className="justify-content-center">
-        <Card.Title>Todo APP</Card.Title>
+          <Card.Title>Todo APP</Card.Title>
           <Col xs={10}>
             <InputGroup className="mb-3">
               <FormControl
+                disabled={this.state.selectedTask.size}
                 placeholder="write task..."
                 aria-label="Recipient's username"
                 aria-describedby="basic-addon2"
                 onChange={this.handleChange}
                 value={inputValue}
+                onKeyDown={this.handleEnter}
               />
               <Button
                 variant="outline-primary"
-                className={style.colo}
+                disabled={this.state.selectedTask.size}
                 onClick={this.addTask}
                 id="button-addon2"
               >
                 Add
+              </Button>
+              <Button
+                disabled={!this.state.selectedTask.size}
+                variant="danger"
+                id="button-addon2"
+                onClick={this.removeSelectedTask}
+              >
+                Remove selected
               </Button>
             </InputGroup>
           </Col>
