@@ -13,7 +13,7 @@ export default class Task extends Component{
 
     render(){
         const task = this.props.data
-        const {disabled,deleteTask, checked} = this.props
+        const {disabled,deleteTask, checked, editTask} = this.props
         return(
             <Card border={`${checked ? `danger`:"primary"} `} className="mb-2">
             <Card.Header>{task.title}</Card.Header>
@@ -42,7 +42,7 @@ export default class Task extends Component{
               className={"m-1"}
                 disabled={disabled}
                 onClick={() => {
-                  
+                 editTask(task)
                 }}
                 variant="warning"
               >

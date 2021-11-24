@@ -1,11 +1,12 @@
 import react, { Component } from "react";
 import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
-//import idGen from "../../helper/idGen";
-class NewTask extends Component {
-  state = {
-    title: "",
-    description: "",
-  };
+import idGen from "../helper/idGen";
+class EditTask extends Component {
+ constructor(props){
+   super(props)
+  this.state = {
+   ...props.editTask
+  }};
   handleChange = (event) => {
     let {name, value} = event.target;
     
@@ -28,19 +29,15 @@ class NewTask extends Component {
       return;
     }
     let newObjValue = {
-      //_id: idGen(),
+      _id: this.state._id,
       title: inputTitle,
       description: description
     };
-    this.props.addTask(newObjValue);
-    this.setState({
-      title: "",
-      description: ""
-    });
+    this.props.editSave(newObjValue);
   };
   render() {
     const { disabled, removeSelectedTask, onHide } = this.props;
-
+    const {title, description} = this.state
     return (
         <Modal
           show={true}
@@ -51,7 +48,7 @@ class NewTask extends Component {
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Add new task!
+              Edit task!
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -65,13 +62,14 @@ class NewTask extends Component {
                 aria-label="Recipient's username"
                 aria-describedby="basic-addon2"
                 onChange={this.handleChange}
-                value={this.state.title}
+                value={title}
                 name="title"
                 onKeyPress={this.handleEnter}
               />
               <Form.Control 
               name="description" 
               placeholder="write task description..." 
+              value={description}
               as="textarea" rows={3}
               onChange={this.handleChange} />
             </Form.Group>
@@ -83,7 +81,7 @@ class NewTask extends Component {
               onClick={this.addTask}
               id="button-addon2"
             >
-              Add
+              Save
             </Button>
             <Button onClick={onHide}>Cancel</Button>
           </Modal.Footer>
@@ -93,4 +91,4 @@ class NewTask extends Component {
   }
 }
 
-export default NewTask;
+export default EditTask;

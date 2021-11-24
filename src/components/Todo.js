@@ -14,6 +14,7 @@ import {
 import Task from "./task/Task";
 import NewTask from "./newTask/newTask";
 import Confirm from "./Confirm";
+import EditTask from "./EditTask";
 
 class Todo extends Component {
   state = {
@@ -21,22 +22,87 @@ class Todo extends Component {
     selectedTask: new Set(),
     showConfirm: false,
     showNewTask: false,
+    editTask: null,
   };
+  componentDidMount() {
+    fetch("http://localhost:3001/task", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response) => {
+        const res = await response.json();
+        if (response.status >= 400 && response.status < 600) {
+          if (response.error) {
+            throw response.error;
+          } else {
+            throw new Error("something error");
+          }
+        }
+        this.setState({
+          tasks: res,
+        });
+      })
+      .catch((error) => {
+        console.log("catch error", error);
+      });
+  }
 
   addTask = (newObjValue) => {
-    let tasks = [...this.state.tasks, newObjValue];
-    this.setState({
-      tasks,
-      showNewTask: false
-    });
+    fetch("http://localhost:3001/task", {
+      method: "POST",
+      body: JSON.stringify(newObjValue),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response) => {
+        const res = await response.json();
+        if (response.status >= 400 && response.status < 600) {
+          if (response.error) {
+            throw response.error;
+          } else {
+            throw new Error("something error");
+          }
+        }
+
+        let tasks = [...this.state.tasks, res];
+        this.setState({
+          tasks,
+          showNewTask: false,
+        });
+      })
+      .catch((error) => {
+        console.log("catch error", error);
+      });
   };
 
   deleteTask = (id) => {
-    const newTask = this.state.tasks.filter((task) => id !== task._id);
+    fetch(`http://localhost:3001/task/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response) => {
+        const res = await response.json();
+        if (response.status >= 400 && response.status < 600) {
+          if (response.error) {
+            throw response.error;
+          } else {
+            throw new Error("something error");
+          }
+        }
+        const newTask = this.state.tasks.filter((task) => id !== task._id);
 
-    this.setState({
-      tasks: newTask,
-    });
+        this.setState({
+          tasks: newTask,
+        });
+      })
+      .catch((error) => {
+        console.log("catch error", error);
+      });
   };
 
   selectTask = (id) => {
@@ -84,13 +150,33 @@ class Todo extends Component {
       selectedTask: new Set(),
     });
   };
-  onHideNewTask = () =>{
+  onHideNewTask = () => {
     this.setState({
-      showNewTask: !this.state.showNewTask
-    })
-  }
+      showNewTask: !this.state.showNewTask,
+    });
+  };
+  editTask = (task) => {
+    this.setState({
+      editTask: task,
+    });
+  };
+  editModalNull = () => {
+    this.setState({
+      editTask: null,
+    });
+  };
+  editTaskSave = (newEditObj) => {
+    const tasks = [...this.state.tasks];
+    const foundTask = tasks.findIndex((task) => task._id === newEditObj._id);
+    tasks[foundTask] = newEditObj;
+    this.setState({
+      tasks,
+      editTask: null,
+    });
+  };
   render() {
-    const { tasks, showConfirm, selectedTask, showNewTask } = this.state;
+    const { tasks, showConfirm, selectedTask, showNewTask, editTask } =
+      this.state;
 
     let li = tasks.map((task, index) => {
       return (
@@ -101,6 +187,7 @@ class Todo extends Component {
             data={task}
             disabled={this.state.selectedTask.size}
             checked={selectedTask.has(task._id)}
+            editTask={this.editTask}
           />
         </Col>
       );
@@ -119,8 +206,8 @@ class Todo extends Component {
             >
               Add NEW TASK
             </Button>
-            </Col>
-            <Col>
+          </Col>
+          <Col>
             <Button
               //
               variant="warning"
@@ -129,8 +216,8 @@ class Todo extends Component {
             >
               Select All
             </Button>
-            </Col>
-            <Col>
+          </Col>
+          <Col>
             <Button
               //
               variant="warning"
@@ -139,8 +226,8 @@ class Todo extends Component {
             >
               UnSelect All
             </Button>
-            </Col>
-            <Col>
+          </Col>
+          <Col>
             <Button
               disabled={!this.state.selectedTask.size}
               variant="danger"
@@ -164,6 +251,13 @@ class Todo extends Component {
             onHide={this.onHideToggle}
             removeSelected={this.removeSelectedTask}
             taskSize={this.state.selectedTask.size}
+          />
+        )}
+        {editTask && (
+          <EditTask
+            onHide={this.editModalNull}
+            editSave={this.editTaskSave}
+            editTask={editTask}
           />
         )}
       </Container>
