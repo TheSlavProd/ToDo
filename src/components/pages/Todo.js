@@ -1,6 +1,6 @@
 import react, { Component } from "react";
-import style from "./todo.module.css";
-import idGen from "../helper/idGen";
+import style from "../todo.module.css";
+import idGen from "../../helper/idGen";
 import {
   Container,
   Row,
@@ -11,10 +11,10 @@ import {
   Card,
   Form,
 } from "react-bootstrap";
-import Task from "./task/Task";
-import NewTask from "./newTask/newTask";
-import Confirm from "./Confirm";
-import EditTask from "./EditTask";
+import Task from "../task/Task";
+import NewTask from "../newTask/newTask";
+import Confirm from "../Confirm";
+import EditTask from "../EditTask";
 
 class Todo extends Component {
   state = {
@@ -49,6 +49,7 @@ class Todo extends Component {
       });
   }
 
+  //--------------------ADD TASK-------------------------------
   addTask = (newObjValue) => {
     fetch("http://localhost:3001/task", {
       method: "POST",
@@ -78,6 +79,7 @@ class Todo extends Component {
       });
   };
 
+  //------------DELETE TASK -------------------------------
   deleteTask = (id) => {
     fetch(`http://localhost:3001/task/${id}`, {
       method: "DELETE",
@@ -105,6 +107,7 @@ class Todo extends Component {
       });
   };
 
+  //-----------------SELECT TASK-----------------------
   selectTask = (id) => {
     let selectedTask = new Set(this.state.selectedTask);
     if (selectedTask.has(id)) {
@@ -118,21 +121,45 @@ class Todo extends Component {
     });
   };
 
+  //-------------REMOVE SELECTED--------------
   removeSelectedTask = () => {
     const { selectedTask, tasks } = this.state;
-    const newTask = tasks.filter((task) => {
-      if (selectedTask.has(task._id)) {
-        return false;
-      } else {
-        return true;
-      }
-    });
-    this.setState({
-      tasks: newTask,
-      selectedTask: new Set(),
-      showConfirm: false,
-    });
+    const body = { tasks: [...selectedTask] };
+    fetch(`http://localhost:3001/task`, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response) => {
+        const res = await response.json();
+        if (response.status >= 400 && response.status < 600) {
+          if (response.error) {
+            throw response.error;
+          } else {
+            throw new Error("something error");
+          }
+        }
+        const newTask = tasks.filter((task) => {
+          if (selectedTask.has(task._id)) {
+            return false;
+          } else {
+            return true;
+          }
+        });
+        this.setState({
+          tasks: newTask,
+          selectedTask: new Set(),
+          showConfirm: false,
+        });
+      })
+      .catch((error) => {
+        console.log("catch error", error);
+      });
   };
+
+  //--------------------------------------------
   onHideToggle = () => {
     this.setState({
       showConfirm: !this.state.showConfirm,
@@ -165,14 +192,39 @@ class Todo extends Component {
       editTask: null,
     });
   };
+
+  //-----------------EDIT TASK---------------------------
   editTaskSave = (newEditObj) => {
-    const tasks = [...this.state.tasks];
-    const foundTask = tasks.findIndex((task) => task._id === newEditObj._id);
-    tasks[foundTask] = newEditObj;
-    this.setState({
-      tasks,
-      editTask: null,
-    });
+    fetch(`http://localhost:3001/task/${newEditObj._id}`, {
+      method: "put",
+      body: JSON.stringify(newEditObj),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response) => {
+        const res = await response.json();
+        if (response.status >= 400 && response.status < 600) {
+          if (response.error) {
+            throw response.error;
+          } else {
+            throw new Error("something error");
+          }
+        }
+
+        const tasks = [...this.state.tasks];
+        const foundTask = tasks.findIndex(
+          (task) => task._id === newEditObj._id
+        );
+        tasks[foundTask] = newEditObj;
+        this.setState({
+          tasks,
+          editTask: null,
+        });
+      })
+      .catch((error) => {
+        console.log("catch error", error);
+      });
   };
   render() {
     const { tasks, showConfirm, selectedTask, showNewTask, editTask } =
