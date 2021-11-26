@@ -3,7 +3,7 @@ import {Card, Form, Button} from "react-bootstrap"
 import style from "./task.module.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash , faEdit} from '@fortawesome/free-solid-svg-icons'
-
+import { formatDate } from "../../helper/utils";
 export default class Task extends Component{
 
     handleCheck = () => {
@@ -21,6 +21,10 @@ export default class Task extends Component{
               <Card.Title>About task</Card.Title>
               <Card.Text>
                { task.description}
+              </Card.Text>
+              <Card.Title>Date:</Card.Title>
+              <Card.Text>
+               { formatDate(task.date)}
               </Card.Text>
               <Form.Check
                 type="checkbox"

@@ -4,8 +4,13 @@ import User from "./components/User";
 import Counter from "./components/Counter";
 import Product from "./components/Product";
 import Input from "./input/Input";
-import Todo from "./components/Todo";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Todo from "./components/pages/Todo";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Menu from "./components/menu/Menu";
+import { NotFound } from "./components/pages/NotFound";
+import { Contact } from "./components/pages/Contact";
+import { About } from "./components/pages/About";
 
 function App() {
   /*
@@ -57,8 +62,19 @@ function App() {
 
   return (
     <div className="App">
-    <Todo />
-   
+      
+    
+      <Router>
+
+      <Menu/>
+        <Routes>
+          <Route path="/" element={<Todo />}/>
+          <Route path="/home" element={<Todo />}/>
+          <Route path="/contact" element={<Contact />}/>
+          <Route path="/about" element={<About />}/>
+          <Route path="*" element={<NotFound />}/>
+        </Routes>
+      </Router>
 
       {/*
         

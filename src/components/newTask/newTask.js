@@ -1,10 +1,15 @@
 import react, { Component } from "react";
 import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 //import idGen from "../../helper/idGen";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { formatDate } from "../../helper/utils";
+
 class NewTask extends Component {
   state = {
     title: "",
     description: "",
+    date: new Date()
   };
   handleChange = (event) => {
     let {name, value} = event.target;
@@ -27,10 +32,13 @@ class NewTask extends Component {
     if (!inputTitle) {
       return;
     }
+
+    const {date} = this.state
     let newObjValue = {
       //_id: idGen(),
       title: inputTitle,
-      description: description
+      description: description,
+      date: formatDate(date.toISOString())
     };
     this.props.addTask(newObjValue);
     this.setState({
@@ -38,6 +46,12 @@ class NewTask extends Component {
       description: ""
     });
   };
+
+  handleChangeDate = (dateValue) => {
+    this.setState({
+      date:dateValue || new Date()
+    })
+  }
   render() {
     const { disabled, removeSelectedTask, onHide } = this.props;
 
@@ -74,6 +88,12 @@ class NewTask extends Component {
               placeholder="write task description..." 
               as="textarea" rows={3}
               onChange={this.handleChange} />
+              <DatePicker
+              minDate={new Date()}
+                selected={this.state.date}
+                onChange={this.handleChangeDate}
+          
+              />
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
