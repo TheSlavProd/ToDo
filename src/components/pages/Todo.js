@@ -1,6 +1,7 @@
 import react, { Component } from "react";
 import style from "../todo.module.css";
 import idGen from "../../helper/idGen";
+import { connect } from "react-redux";
 import {
   Container,
   Row,
@@ -15,7 +16,7 @@ import Task from "../task/Task";
 import NewTask from "../newTask/newTask";
 import Confirm from "../Confirm";
 import EditTask from "../EditTask";
-
+import request from "../../helper/request";
 class Todo extends Component {
   state = {
     tasks: [],
@@ -25,28 +26,7 @@ class Todo extends Component {
     editTask: null,
   };
   componentDidMount() {
-    fetch("http://localhost:3001/task", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (response) => {
-        const res = await response.json();
-        if (response.status >= 400 && response.status < 600) {
-          if (response.error) {
-            throw response.error;
-          } else {
-            throw new Error("something error");
-          }
-        }
-        this.setState({
-          tasks: res,
-        });
-      })
-      .catch((error) => {
-        console.log("catch error", error);
-      });
+    this.props.onGetTasks();
   }
 
   //--------------------ADD TASK-------------------------------
@@ -227,9 +207,8 @@ class Todo extends Component {
       });
   };
   render() {
-    const { tasks, showConfirm, selectedTask, showNewTask, editTask } =
-      this.state;
-
+    const { showConfirm, selectedTask, showNewTask, editTask } = this.state;
+    const { tasks } = this.props;
     let li = tasks.map((task, index) => {
       return (
         <Col key={task._id} xl={2} lg={3} md={4} sm={6} xs={12}>
@@ -317,4 +296,29 @@ class Todo extends Component {
   }
 }
 
-export default Todo;
+const mapStateToProps = (state) => {
+  return {
+    tasks: state.tasks,
+  };
+};
+
+//const mapDispachToProps = (dispach) => {
+//return {
+// onGetTasks: () => {
+// request("http://localhost:3001/task").then((tasks) => {
+//   dispach({ type: "GET_TASKS", tasks });
+//  });
+//  },
+// };
+//};
+
+const mapDispachToProps = {
+  onGetTasks: () => {
+    return (dispach) => {
+      request("http://localhost:3001/task").then((tasks) => {
+        dispach({ type: "GET_TASKS", tasks });
+      });
+    };
+  },
+};
+export default connect(mapStateToProps, mapDispachToProps)(Todo);
