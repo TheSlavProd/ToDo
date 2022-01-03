@@ -11,7 +11,8 @@ import Menu from "./components/menu/Menu";
 import { NotFound } from "./components/pages/NotFound";
 import { Contact } from "./components/pages/Contact";
 import { About } from "./components/pages/About";
-
+import SingleTask from "./components/pages/SingleTask";
+import Naymax from "./components/pages/naymax/Naymax";
 function App() {
   /*
   const fruits = [
@@ -62,17 +63,16 @@ function App() {
 
   return (
     <div className="App">
-      
-    
       <Router>
-
-      <Menu/>
+        <Menu />
         <Routes>
-          <Route path="/" element={<Todo />}/>
-          <Route path="/home" element={<Todo />}/>
-          <Route path="/contact" element={<Contact />}/>
-          <Route path="/about" element={<About />}/>
-          <Route path="*" element={<NotFound />}/>
+          <Route path="/" element={<Naymax />} />
+          <Route path="/home" element={<Naymax />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/todo" element={<Todo />} />
+          <Route path="/task/:id" element={<SingleTask />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
 

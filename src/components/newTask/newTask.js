@@ -1,4 +1,4 @@
-import react, { Component } from "react";
+import React, { Component } from "react";
 import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 //import idGen from "../../helper/idGen";
 import DatePicker from "react-datepicker";
@@ -6,11 +6,20 @@ import "react-datepicker/dist/react-datepicker.css";
 import { formatDate } from "../../helper/utils";
 
 class NewTask extends Component {
+  constructor(props){
+    super(props)
+    this.myRef = React.createRef();
+  }
   state = {
     title: "",
     description: "",
     date: new Date()
   };
+  componentDidMount(){
+   // console.log(this.myRef)
+    this.myRef.current.focus()
+  }
+
   handleChange = (event) => {
     let {name, value} = event.target;
     
@@ -82,6 +91,7 @@ class NewTask extends Component {
                 value={this.state.title}
                 name="title"
                 onKeyPress={this.handleEnter}
+                ref={this.myRef}
               />
               <Form.Control 
               name="description" 
