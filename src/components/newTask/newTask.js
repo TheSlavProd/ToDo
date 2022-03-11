@@ -4,28 +4,28 @@ import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { formatDate } from "../../helper/utils";
-
+import { connect } from "react-redux";
+import { addTask } from "../../redux/actions";
 class NewTask extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.myRef = React.createRef();
   }
   state = {
     title: "",
     description: "",
-    date: new Date()
+    date: new Date(),
   };
-  componentDidMount(){
-   // console.log(this.myRef)
-    this.myRef.current.focus()
+  componentDidMount() {
+    // console.log(this.myRef)
+    this.myRef.current.focus();
   }
 
   handleChange = (event) => {
-    let {name, value} = event.target;
-    
-    this.setState({
-      [name]:value
+    let { name, value } = event.target;
 
+    this.setState({
+      [name]: value,
     });
   };
 
@@ -42,85 +42,85 @@ class NewTask extends Component {
       return;
     }
 
-    const {date} = this.state
+    const { date } = this.state;
     let newObjValue = {
       //_id: idGen(),
       title: inputTitle,
       description: description,
-      date: formatDate(date.toISOString())
+      date: formatDate(date.toISOString()),
     };
     this.props.addTask(newObjValue);
     this.setState({
       title: "",
-      description: ""
+      description: "",
     });
   };
 
   handleChangeDate = (dateValue) => {
     this.setState({
-      date:dateValue || new Date()
-    })
-  }
+      date: dateValue || new Date(),
+    });
+  };
   render() {
     const { disabled, removeSelectedTask, onHide } = this.props;
 
     return (
-        <Modal
-          show={true}
-          onHide={onHide}
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-              Add new task!
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form.Group
+      <Modal
+        show={true}
+        onHide={onHide}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Add new task!
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+            <FormControl
               className="mb-3"
-              controlId="exampleForm.ControlTextarea1"
-            >
-              <FormControl className="mb-3"
-                disabled={disabled}
-                placeholder="write task title..."
-                aria-label="Recipient's username"
-                aria-describedby="basic-addon2"
-                onChange={this.handleChange}
-                value={this.state.title}
-                name="title"
-                onKeyPress={this.handleEnter}
-                ref={this.myRef}
-              />
-              <Form.Control 
-              name="description" 
-              placeholder="write task description..." 
-              as="textarea" rows={3}
-              onChange={this.handleChange} />
-              <DatePicker
-              minDate={new Date()}
-                selected={this.state.date}
-                onChange={this.handleChangeDate}
-          
-              />
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="success"
               disabled={disabled}
-              onClick={this.addTask}
-              id="button-addon2"
-            >
-              Add
-            </Button>
-            <Button onClick={onHide}>Cancel</Button>
-          </Modal.Footer>
-        </Modal>
-      
+              placeholder="write task title..."
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon2"
+              onChange={this.handleChange}
+              value={this.state.title}
+              name="title"
+              onKeyPress={this.handleEnter}
+              ref={this.myRef}
+            />
+            <Form.Control
+              name="description"
+              placeholder="write task description..."
+              as="textarea"
+              rows={3}
+              onChange={this.handleChange}
+            />
+            <DatePicker
+              minDate={new Date()}
+              selected={this.state.date}
+              onChange={this.handleChangeDate}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="success"
+            disabled={disabled}
+            onClick={this.addTask}
+            id="button-addon2"
+          >
+            Add
+          </Button>
+          <Button onClick={onHide}>Cancel</Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }
-
-export default NewTask;
+const mapDispachToProps = {
+  addTask,
+};
+export default connect(null, mapDispachToProps)(NewTask);

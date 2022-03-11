@@ -16,10 +16,10 @@ import Task from "../task/Task";
 import NewTask from "../newTask/newTask";
 import Confirm from "../Confirm";
 import EditTask from "../EditTask";
-import request from "../../helper/request";
+import { onGetTasks, deleteTask } from "../../redux/actions";
 class Todo extends Component {
   state = {
-    tasks: [],
+    // tasks: [],
     selectedTask: new Set(),
     showConfirm: false,
     showNewTask: false,
@@ -29,63 +29,18 @@ class Todo extends Component {
     this.props.onGetTasks();
   }
 
-  //--------------------ADD TASK-------------------------------
-  addTask = (newObjValue) => {
-    fetch("http://localhost:3001/task", {
-      method: "POST",
-      body: JSON.stringify(newObjValue),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (response) => {
-        const res = await response.json();
-        if (response.status >= 400 && response.status < 600) {
-          if (response.error) {
-            throw response.error;
-          } else {
-            throw new Error("something error");
-          }
-        }
-
-        let tasks = [...this.state.tasks, res];
-        this.setState({
-          tasks,
-          showNewTask: false,
-        });
-      })
-      .catch((error) => {
-        console.log("catch error", error);
+  componentDidUpdate(prevState) {
+    console.log(prevState);
+    if (!prevState.newTaskModal && this.props.newTaskModal) {
+      this.setState({
+        showNewTask: false,
       });
-  };
+    }
+  }
+
+  //--------------------ADD TASK-------------------------------
 
   //------------DELETE TASK -------------------------------
-  deleteTask = (id) => {
-    fetch(`http://localhost:3001/task/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (response) => {
-        const res = await response.json();
-        if (response.status >= 400 && response.status < 600) {
-          if (response.error) {
-            throw response.error;
-          } else {
-            throw new Error("something error");
-          }
-        }
-        const newTask = this.state.tasks.filter((task) => id !== task._id);
-
-        this.setState({
-          tasks: newTask,
-        });
-      })
-      .catch((error) => {
-        console.log("catch error", error);
-      });
-  };
 
   //-----------------SELECT TASK-----------------------
   selectTask = (id) => {
@@ -214,7 +169,7 @@ class Todo extends Component {
         <Col key={task._id} xl={2} lg={3} md={4} sm={6} xs={12}>
           <Task
             selectTask={this.selectTask}
-            deleteTask={this.deleteTask}
+            deleteTask={this.props.deleteTask}
             data={task}
             disabled={this.state.selectedTask.size}
             checked={selectedTask.has(task._id)}
@@ -274,7 +229,7 @@ class Todo extends Component {
           <NewTask
             onHide={this.onHideNewTask}
             disabled={this.state.selectedTask.size}
-            addTask={this.addTask}
+            //addTask={this.props.addTask}
           />
         )}
         {showConfirm && (
@@ -299,6 +254,7 @@ class Todo extends Component {
 const mapStateToProps = (state) => {
   return {
     tasks: state.tasks,
+    newTaskModal: state.newTaskModal,
   };
 };
 
@@ -313,12 +269,7 @@ const mapStateToProps = (state) => {
 //};
 
 const mapDispachToProps = {
-  onGetTasks: () => {
-    return (dispach) => {
-      request("http://localhost:3001/task").then((tasks) => {
-        dispach({ type: "GET_TASKS", tasks });
-      });
-    };
-  },
+  onGetTasks,
+  deleteTask,
 };
 export default connect(mapStateToProps, mapDispachToProps)(Todo);

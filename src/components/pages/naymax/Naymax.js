@@ -17,7 +17,6 @@ function Naymax() {
       <Questions />
       <FamousPeople />
       <ContactForm />
-      <Footer />
     </Container>
   );
 }

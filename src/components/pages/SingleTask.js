@@ -17,7 +17,7 @@ function SingleTask() {
     return () => {
       console.log("unmount");
     };
-  }, []); */
+  }, []); 
 
   useLayoutEffect(() => {
     console.log("gago");
@@ -25,6 +25,7 @@ function SingleTask() {
       console.log("unmount");
     };
   }, []);
+*/
 
   useEffect(() => {
     fetch(`http://localhost:3001/task/${id}`, {

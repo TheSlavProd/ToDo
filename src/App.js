@@ -13,6 +13,7 @@ import { Contact } from "./components/pages/Contact";
 import { About } from "./components/pages/About";
 import SingleTask from "./components/pages/SingleTask";
 import Naymax from "./components/pages/naymax/Naymax";
+import Footer from "./components/pages/naymax/Footer";
 function App() {
   /*
   const fruits = [
@@ -74,6 +75,7 @@ function App() {
           <Route path="/task/:id" element={<SingleTask />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <Footer />
       </Router>
 
       {/*

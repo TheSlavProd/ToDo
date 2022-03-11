@@ -17,3 +17,5 @@ const mapDispachToProps = (dispach) => {
 };
 
 export default connect(null, mapDispachToProps)(Decrement);
+
+

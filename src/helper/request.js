@@ -2,7 +2,7 @@ import React from "react";
 
 export default function request(url, method = "GET", body) {
   const config = {
-    method: "GET",
+    method: method,
     headers: {
       "Content-Type": "application/json",
     },

@@ -1,0 +1,60 @@
+
+    <Navbar style={{ backgroundColor: "#6200ea" }} bg="primary" variant="dark">
+      <Container>
+        <Navbar.Brand href="/home">
+          <img
+            alt=""
+            src={logo}
+            width="30"
+            height="30"
+            className="d-inline-block align-top"
+          />
+          Naymax
+        </Navbar.Brand>
+        <Nav className="me-auto">
+          <Link to="/home">
+            <Button>Home</Button>
+          </Link>
+          <Link to="/about">
+            <Button>About</Button>
+          </Link>
+          <Link to="/contact">
+            <Button>Contact</Button>
+          </Link>
+          <Link to="/todo">
+            <Button>Todo</Button>
+          </Link>
+        </Nav>
+      </Container>
+    </Navbar> 
+
+
+
+
+
+    <Form>
+        <Row className="mb-3 ">
+          <Form.Group as={Col} controlId="formGridEmail">
+            <Form.Label>Name Surname</Form.Label>
+            <Form.Control type="email" placeholder="Enter email" />
+          </Form.Group>
+
+          <Form.Group as={Col} controlId="formGridPassword">
+            <Form.Label>Email</Form.Label>
+            <Form.Control type="password" placeholder="Password" />
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Group as={Col} controlId="formGridState">
+            <Form.Label>Phone</Form.Label>
+            <Form.Control defaultValue="+(374) "></Form.Control>
+          </Form.Group>
+        </Row>
+
+        <Form.Group className="mb-3" id="formGridCheckbox">
+          <Form.Check type="checkbox" label="I agree with P.P." />
+        </Form.Group>
+
+        <Button variant="info">Enroll</Button>
+      </Form>

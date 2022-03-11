@@ -1,5 +1,8 @@
-import { Row, Col, Button, Form } from "react-bootstrap";
-
+import { Row, Col, Form } from "react-bootstrap";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import SendIcon from "@mui/icons-material/Send";
 function ContactForm() {
   return (
     <Row className="mt-5 mb-5 justify-content-center">
@@ -11,32 +14,39 @@ function ContactForm() {
         </p>
       </Col>
       <Col>
-        <Form>
-          <Row className="mb-3 ">
-            <Form.Group as={Col} controlId="formGridEmail">
-              <Form.Label>Name Surname</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
-            </Form.Group>
-
-            <Form.Group as={Col} controlId="formGridPassword">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-          </Row>
-
-          <Row className="mb-3">
-            <Form.Group as={Col} controlId="formGridState">
-              <Form.Label>Phone</Form.Label>
-              <Form.Control defaultValue="+(374) "></Form.Control>
-            </Form.Group>
-          </Row>
-
-          <Form.Group className="mb-3" id="formGridCheckbox">
-            <Form.Check type="checkbox" label="I agree with P.P." />
-          </Form.Group>
-
-          <Button variant="info">Enroll</Button>
-        </Form>
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined-basic"
+            label="Name"
+            variant="standard"
+            color="secondary"
+          />
+          <TextField
+            color="secondary"
+            id="outlined-basic"
+            label="Eamil"
+            type="email"
+            variant="standard"
+          />
+          <TextField
+            color="secondary"
+            id="standard-basic"
+            label="Phone"
+            variant="standard"
+            type="tel"
+          />
+          <br />
+          <Button variant="outlined" size="large" endIcon={<SendIcon />}>
+            Send
+          </Button>
+        </Box>
       </Col>
     </Row>
   );

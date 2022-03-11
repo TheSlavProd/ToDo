@@ -1,6 +1,7 @@
 const defaultState = {
   count: 0,
   tasks: [],
+  newTaskModal: false,
 };
 
 export function reducer(state = defaultState, action) {
@@ -22,6 +23,26 @@ export function reducer(state = defaultState, action) {
       return {
         ...state,
         tasks: action.tasks,
+      };
+    }
+    case "ADD_TASK": {
+      return {
+        ...state,
+        tasks: [...state.tasks, action.task],
+        newTaskModal: true,
+      };
+    }
+    case "ADDING_TASK": {
+      return {
+        ...state,
+        newTaskModal: false,
+      };
+    }
+    case "DELETE_TASK": {
+      const newTask = state.tasks.filter((task) => action.id !== task._id);
+      return {
+        ...state,
+        tasks: newTask,
       };
     }
     default:
